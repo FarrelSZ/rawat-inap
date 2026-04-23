@@ -1,0 +1,56 @@
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  totalItems: number;
+  pageSize: number;
+}
+
+export function Pagination({ currentPage, totalPages, onPageChange, totalItems, pageSize }: PaginationProps) {
+  const start = totalItems === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+  const end = Math.min(currentPage * pageSize, totalItems);
+
+  if (totalPages <= 1 && totalItems === 0) return null;
+
+  return (
+    <div className="flex items-center justify-between px-2">
+      <p className="text-sm text-muted-foreground">
+        Menampilkan {start}–{end} dari {totalItems} pasien
+      </p>
+      <div className="flex items-center gap-1">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage <= 1}
+          aria-label="Halaman sebelumnya"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <Button
+            key={page}
+            variant={page === currentPage ? "default" : "outline"}
+            size="sm"
+            onClick={() => onPageChange(page)}
+            className="min-w-9"
+          >
+            {page}
+          </Button>
+        ))}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage >= totalPages}
+          aria-label="Halaman berikutnya"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+  );
+}
