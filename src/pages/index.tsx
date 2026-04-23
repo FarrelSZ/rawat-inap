@@ -206,12 +206,6 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-2">
               <p className="hidden text-xs text-muted-foreground sm:block">{today}</p>
-              <Link href="/rawat-inap">
-                <Button size="sm">
-                  <BedDouble className="h-3.5 w-3.5" />
-                  Rawat Inap
-                </Button>
-              </Link>
             </div>
           </div>
         </header>
@@ -241,43 +235,8 @@ export default function Home() {
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </Link>
-                  <Button variant="outline" size="lg" disabled className="w-full sm:w-auto">
-                    Lihat Semua Modul
-                  </Button>
                 </div>
               </div>
-            </div>
-          </section>
-
-          {/* ── Stats ── */}
-          <section className="mb-10">
-            <h2 className="mb-4 text-sm font-semibold text-muted-foreground uppercase tracking-wide">
-              Ringkasan Hari Ini
-            </h2>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {STATS.map((s) => (
-                <StatCard key={s.label} {...s} />
-              ))}
-            </div>
-          </section>
-
-          <Separator className="mb-10" />
-
-          {/* ── Modules ── */}
-          <section>
-            <div className="mb-5 flex items-end justify-between">
-              <div>
-                <h2 className="text-lg font-bold">Modul Sistem</h2>
-                <p className="text-sm text-muted-foreground">Akses cepat ke seluruh modul rumah sakit</p>
-              </div>
-              <Badge variant="outline" className="text-xs shrink-0">
-                1 dari 6 aktif
-              </Badge>
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {MODULES.map((m) => (
-                <ModuleCard key={m.title} {...m} />
-              ))}
             </div>
           </section>
         </main>
@@ -286,7 +245,6 @@ export default function Home() {
         <footer className="mt-16 border-t">
           <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-6 text-center text-xs text-muted-foreground sm:flex-row sm:px-6 sm:text-left">
             <p>© 2026 SIMRS — Sistem Informasi Manajemen Rumah Sakit</p>
-            <p>Dibangun dengan Next.js · shadcn/ui · TanStack Query</p>
           </div>
         </footer>
       </div>

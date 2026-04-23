@@ -1,3 +1,5 @@
+export type View = "list" | "form";
+
 export type Gender = "L" | "P";
 
 export type RoomType = "VIP" | "Kelas 1" | "Kelas 2" | "Kelas 3" | "ICU" | "PICU" | "NICU";

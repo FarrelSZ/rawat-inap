@@ -8,7 +8,7 @@ import { EmptyState } from "./EmptyState";
 import { Patient, SortDirection, SortField, SortState } from "@/types/patient";
 import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 10;
 
 interface PatientTableProps {
   patients: Patient[];
