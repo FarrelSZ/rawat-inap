@@ -7,9 +7,11 @@ interface ListViewProps {
   patients: Patient[];
   isLoading: boolean;
   onRegister: () => void;
+  onEdit?: (patient: Patient) => void;
+  onDelete?: (patient: Patient) => void;
 }
 
-export function ListView({ patients, isLoading, onRegister }: ListViewProps) {
+export function ListView({ patients, isLoading, onRegister, onEdit, onDelete }: ListViewProps) {
   return (
     <>
       <div className="mb-6">
@@ -26,7 +28,7 @@ export function ListView({ patients, isLoading, onRegister }: ListViewProps) {
             <span className="sm:hidden">Tambah</span>
           </Button>
         </div>
-        <PatientTable patients={patients} isLoading={isLoading} />
+        <PatientTable patients={patients} isLoading={isLoading} onEdit={onEdit} onDelete={onDelete} />
       </div>
     </>
   );

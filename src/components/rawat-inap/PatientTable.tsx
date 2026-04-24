@@ -6,13 +6,15 @@ import { SearchBar } from "./SearchBar";
 import { Pagination } from "./Pagination";
 import { EmptyState } from "./EmptyState";
 import { Patient, SortDirection, SortField, SortState } from "@/types/patient";
-import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { ArrowUpDown, ArrowUp, ArrowDown, Pencil, Trash2, AlertTriangle } from "lucide-react";
 
 const PAGE_SIZE = 10;
 
 interface PatientTableProps {
   patients: Patient[];
   isLoading: boolean;
+  onEdit?: (patient: Patient) => void;
+  onDelete?: (patient: Patient) => void;
 }
 
 function SortIcon({ field, sort }: { field: SortField; sort: SortState }) {
@@ -42,7 +44,7 @@ function getRuanganVariant(ruangan: Patient["ruangan"]): "default" | "secondary"
 function SkeletonRow() {
   return (
     <TableRow>
-      {[32, 140, 120, 160, 100, 140, 64, 56].map((w, i) => (
+      {[32, 140, 120, 160, 100, 140, 64, 56, 80].map((w, i) => (
         <TableCell key={i}>
           <div className="h-4 animate-pulse rounded bg-muted" style={{ width: w }} />
         </TableCell>
@@ -51,13 +53,14 @@ function SkeletonRow() {
   );
 }
 
-export function PatientTable({ patients, isLoading }: PatientTableProps) {
+export function PatientTable({ patients, isLoading, onEdit, onDelete }: PatientTableProps) {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<SortState>({
     field: "tanggalmasuk",
     direction: "desc",
   });
   const [page, setPage] = useState(1);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   function toggleSort(field: SortField) {
     setSort((prev) => {
@@ -142,6 +145,7 @@ export function PatientTable({ patients, isLoading }: PatientTableProps) {
                   <TableHead className="text-xs font-semibold uppercase tracking-wide">Dokter PJ</TableHead>
                   <TableHead className="text-xs font-semibold uppercase tracking-wide">Ruangan</TableHead>
                   <TableHead className="text-xs font-semibold uppercase tracking-wide">Status</TableHead>
+                  <TableHead className="text-xs font-semibold uppercase tracking-wide text-center">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -176,6 +180,53 @@ export function PatientTable({ patients, isLoading }: PatientTableProps) {
                           >
                             Aktif
                           </Badge>
+                        </TableCell>
+                        <TableCell>
+                          {confirmDeleteId === patient.id ? (
+                            <div className="flex items-center gap-1">
+                              <AlertTriangle className="h-3.5 w-3.5 text-destructive shrink-0" />
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                className="h-7 px-2 text-xs"
+                                onClick={() => {
+                                  onDelete?.(patient);
+                                  setConfirmDeleteId(null);
+                                }}
+                              >
+                                Hapus
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 px-2 text-xs"
+                                onClick={() => setConfirmDeleteId(null)}
+                              >
+                                Batal
+                              </Button>
+                            </div>
+                          ) : (
+                            <div className="flex items-center justify-center gap-1">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 w-7 p-0"
+                                title="Edit pasien"
+                                onClick={() => onEdit?.(patient)}
+                              >
+                                <Pencil className="h-3.5 w-3.5" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 w-7 p-0 text-destructive hover:text-destructive"
+                                title="Hapus pasien"
+                                onClick={() => setConfirmDeleteId(patient.id)}
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </Button>
+                            </div>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}

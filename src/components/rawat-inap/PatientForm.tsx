@@ -6,7 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PatientFormValues, RoomType } from "@/types/patient";
-import { Loader2, User, CreditCard, Stethoscope, CalendarDays, UserCheck, BedDouble, AlertCircle } from "lucide-react";
+import {
+  Loader2,
+  User,
+  CreditCard,
+  Stethoscope,
+  CalendarDays,
+  UserCheck,
+  BedDouble,
+  AlertCircle,
+  Pencil,
+} from "lucide-react";
 
 const ROOM_OPTIONS: RoomType[] = ["VIP", "Kelas 1", "Kelas 2", "Kelas 3", "ICU", "PICU", "NICU"];
 
@@ -48,6 +58,8 @@ interface PatientFormProps {
   onSubmit: (values: PatientFormValues) => void;
   onCancel: () => void;
   isSubmitting: boolean;
+  initialValues?: PatientFormValues;
+  mode?: "add" | "edit";
 }
 
 function SectionHeading({ icon, title, subtitle }: { icon: React.ReactNode; title: string; subtitle?: string }) {
@@ -64,12 +76,12 @@ function SectionHeading({ icon, title, subtitle }: { icon: React.ReactNode; titl
   );
 }
 
-export function PatientForm({ onSubmit, onCancel, isSubmitting }: PatientFormProps) {
+export function PatientForm({ onSubmit, onCancel, isSubmitting, initialValues, mode = "add" }: PatientFormProps) {
   const today = new Date().toISOString().split("T")[0];
 
   const form = useForm<PatientFormValues>({
     resolver: zodResolver(patientSchema),
-    defaultValues: {
+    defaultValues: initialValues ?? {
       nama: "",
       nik: "",
       diagnosamasuk: "",
@@ -280,6 +292,11 @@ export function PatientForm({ onSubmit, onCancel, isSubmitting }: PatientFormPro
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
                   Menyimpan...
+                </>
+              ) : mode === "edit" ? (
+                <>
+                  <Pencil className="h-4 w-4" />
+                  Simpan Perubahan
                 </>
               ) : (
                 <>

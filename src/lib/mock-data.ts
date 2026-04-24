@@ -179,3 +179,19 @@ export async function addPatient(data: Omit<Patient, "id" | "status">): Promise<
   patientStore = [newPatient, ...patientStore];
   return newPatient;
 }
+
+export async function updatePatient(id: string, data: Omit<Patient, "id" | "status">): Promise<Patient> {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const index = patientStore.findIndex((p) => p.id === id);
+  if (index === -1) throw new Error("Pasien tidak ditemukan");
+  const updated: Patient = { ...patientStore[index], ...data };
+  patientStore = patientStore.map((p) => (p.id === id ? updated : p));
+  return updated;
+}
+
+export async function deletePatient(id: string): Promise<void> {
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  const exists = patientStore.some((p) => p.id === id);
+  if (!exists) throw new Error("Pasien tidak ditemukan");
+  patientStore = patientStore.filter((p) => p.id !== id);
+}
